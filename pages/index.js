@@ -24,14 +24,24 @@ export default function Index({ federacao }) {
     </Container>
   );
 }
+export async function getStaticPropstemp(context) {
+  console.log(process.env);
+  return {
+    props: {
+      federacao: [{ id: 0, descricao: 'isso é um teste' }],
+    },
+  };
+}
+
 export async function getStaticProps(context) {
+  console.log('getStatic');
   const federacao = await query(`select  cp.id, p.descricao,  cp.limite,
   cp.kimono, i.descricao  from categoria_peso cp 
   join idade_federacao if2 on if2.id = cp.idade_federacao_id 
   join peso p ON p.id =cp.peso_id 
   join federacao f on f.id = if2.federacao_id 
   join idade i on i.id =if2.idade_id `);
-  console.log('getStaticProps');
+  console.log(federacao);
   return {
     props: {
       federacao: federacao,
